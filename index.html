@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PRECISION FOR THE CHAOS // SYSTEM_V1.0</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Bevan&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            /* From Manual */
+            --primary-font: "DIN1451", "Bahnschrift", "Arial Narrow", sans-serif;
+            --experimental-font: "Bevan", serif;
+            --color-bg: #0a0a0a;
+            --color-text: #f2f2f2;
+            --color-accent: #ff4d6d; /* Your signature pink */
+            
+            /* Spacing System - Base 8px */
+            --unit: 8px;
+            --gap-section: calc(var(--unit) * 10); /* 80px */
+            --gap-sub: calc(var(--unit) * 5);     /* 40px */
+            --gap-micro: calc(var(--unit) * 2);   /* 16px */
+        }
+
+        body {
+            background-color: var(--color-bg);
+            color: var(--color-text);
+            font-family: var(--primary-font);
+            margin: 0;
+            padding: 0;
+            text-transform: uppercase; /* Brand Authority */
+        }
+
+        /* 12-COLUMN GRID OVERLAY (Visualizing the Manual) */
+        .site-grid {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 24px;
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* HEADER & NAVIGATION */
+        nav {
+            grid-column: span 12;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: var(--gap-micro) 0;
+            border-bottom: 1px solid rgba(255,255,255,0.15);
+            margin-bottom: var(--gap-sub);
+        }
+
+        .logo-box {
+            background: var(--color-accent);
+            color: var(--color-bg);
+            padding: 5px 10px;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+        }
+
+        /* HERO - SECTION 1: SYSTEM AUTHORITY */
+        .hero {
+            grid-column: span 12;
+            padding: var(--gap-section) 0;
+            border-bottom: 1px solid rgba(255,255,255,0.15);
+        }
+
+        h1 {
+            font-size: clamp(40px, 8vw, 64px);
+            letter-spacing: 0.08em;
+            margin: 0;
+            line-height: 0.9;
+        }
+
+        .experimental-burst {
+            font-family: var(--experimental-font);
+            color: var(--color-accent);
+            font-size: clamp(30px, 5vw, 48px);
+            margin-top: var(--gap-micro);
+            letter-spacing: 0.02em;
+        }
+
+        /* PRODUCT TIERS - GRID LOGIC */
+        .product-card {
+            grid-column: span 4; /* From your Manual's Col-4 */
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: var(--gap-micro);
+            transition: all 0.2s ease;
+        }
+
+        .product-card:hover {
+            border-color: var(--color-accent);
+            background: rgba(255,77,109,0.05);
+        }
+
+        .product-img {
+            width: 100%;
+            aspect-ratio: 1/1;
+            background: #1a1a1a;
+            margin-bottom: var(--gap-micro);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            opacity: 0.5;
+        }
+
+        /* TECHNICAL SPEC TABLE */
+        .specs {
+            grid-column: span 12;
+            margin-top: var(--gap-section);
+            padding-bottom: var(--gap-section);
+        }
+
+        .spec-row {
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding: var(--gap-micro) 0;
+        }
+
+        .caption {
+            font-size: 14px;
+            letter-spacing: 0.1em;
+            opacity: 0.6;
+        }
+
+        @media (max-width: 768px) {
+            .product-card { grid-column: span 12; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="site-grid">
+    <nav>
+        <div class="logo-box">DE LA .OM RAJUO</div>
+        <div class="caption">// MODULAR SHELTER PROTOCOL //</div>
+    </nav>
+
+    <section class="hero">
+        <div class="caption">Status: Online // CNC System 44.1kHz</div>
+        <h1>PRECISION FOR THE CHAOS</h1>
+        <div class="experimental-burst">EXPERIMENTAL ARTIST INTERFACE</div>
+    </section>
+
+    <div class="product-card">
+        <div class="product-img">[ CNC_PATH_WALNUT ]</div>
+        <h3>_CASE_01: WALNUT</h3>
+        <p class="caption">Precision Machined Core</p>
+    </div>
+
+    <div class="product-card">
+        <div class="product-img">[ CNC_PATH_BLACK ]</div>
+        <h3>_CASE_02: VALCHROMAT</h3>
+        <p class="caption">Industrial Mass System</p>
+    </div>
+
+    <div class="product-card">
+        <div class="product-img">[ CNC_PATH_CLEAR ]</div>
+        <h3>_CASE_03: ACRYLIC</h3>
+        <p class="caption">The Ghost Signal Layer</p>
+    </div>
+
+    <section class="specs">
+        <h2>3 — TECHNICAL_MANIFEST</h2>
+        <div class="spec-row">
+            <span>Standard Width</span>
+            <span class="color-accent">84HP / 104HP / 126HP</span>
+        </div>
+        <div class="spec-row">
+            <span>Material Tolerance</span>
+            <span>+/- 0.01MM CNC PRECISION</span>
+        </div>
+        <div class="spec-row">
+            <span>Core Material</span>
+            <span>A-GRADE SOLID HARDWOOD</span>
+        </div>
+    </section>
+</div>
+
+</body>
+</html>

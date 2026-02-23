@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CVCooperator — V1 (Locked)</title>
+
+<style>
+body {
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: #0e0e11;
+    color: #eaeaf0;
+    margin: 0;
+    padding: 2rem;
+    line-height: 1.65;
+}
+
+h1, h2, h3 {
+    color: #ff6fae;
+    margin-top: 3rem;
+}
+
+h1 { font-size: 2.4rem; }
+h2 { font-size: 1.6rem; }
+h3 { font-size: 1.2rem; }
+
+.block {
+    background: #181820;
+    border-radius: 14px;
+    padding: 1.5rem 1.75rem;
+    margin: 2rem 0;
+    box-shadow: 0 12px 30px rgba(0,0,0,0.45);
+}
+
+.schema {
+    font-family: "Courier New", monospace;
+    white-space: pre;
+    background: #0b0b0f;
+    padding: 1.2rem;
+    border-radius: 10px;
+    overflow-x: auto;
+    color: #b7f5d8;
+    margin: 1.5rem 0;
+}
+
+.note { color: #8ecae6; }
+.warn { color: #ffd166; }
+
+footer {
+    margin-top: 4rem;
+    opacity: 0.55;
+    font-size: 0.9rem;
+}
+</style>
+</head>
+
+<body>
+
+<h1>CVCooperator — V1</h1>
+<p><strong>Optically-Controlled CV Shunt</strong><br>
+Passive Core · Bus Powered Reference · Patch Driven Behavior</p>
+
+<div class="block">
+<p>
+CVCooperator is a nonlinear optical CV processor.  
+It mixes two modulation sources through light-dependent resistors,
+biases them against a controllable reference,
+and shapes the result with selectable lag.
+</p>
+<p>
+It is not a precision tool.  
+It is a controlled leak.
+</p>
+</div>
+
+---
+
+<h2>1. Channel Architecture (Locked)</h2>
+
+<div class="schema">
++5V BUS
+  │
+ [1k–2.2k]
+  │
+  ●────────────── REF BUS ─────────────┐
+  │                                     │
+ [10µF]                                (shared per module)
+  │
+ [100nF]
+  │
+ GND
+
+
+Per Channel:
+
+REF BUS
+  │
+ [10k fixed]
+  │
+ [R-REF pot]
+  │
+  ●───────────────► OUT
+  │
+  ├── LDR1 ─┐
+  ├── LDR2 ─┤──► GND
+  ├── 100k ─┘  (bias floor)
+  │
+  └── CAP SWITCH ──► GND
+        | 1µF
+        | 4.7µF
+        | 10µF
+
+
+MOD1 → Level pot → LED1
+MOD2 → Level pot → LED2
+Both LED currents scaled by AMT pot
+</div>
+
+---
+
+<h2>2. Controls</h2>
+
+<ul>
+<li><strong>MOD1 / MOD2</strong> — Two CV modulation inputs</li>
+<li><strong>Level 1 / Level 2</strong> — Per-source LED drive control</li>
+<li><strong>AMT</strong> — Global modulation strength (LED current scaling)</li>
+<li><strong>REF</strong> — Variable series resistance (compliance / ceiling)</li>
+<li><strong>LAG</strong> — 3-stage capacitor selection</li>
+<li><strong>OUT</strong> — Resulting CV output</li>
+</ul>
+
+<p class="note">
+AMT controls light intensity, not voltage directly.  
+REF controls stiffness of the reference source.
+</p>
+
+---
+
+<h2>3. Reference & Bus Decoupling</h2>
+
+<p>
+Reference voltage is derived from the Eurorack +5V rail.
+It is locally isolated and decoupled before distribution.
+</p>
+
+<ul>
+<li>1k–2.2k isolation resistor</li>
+<li>10µF electrolytic bulk capacitor</li>
+<li>100nF ceramic high-frequency capacitor</li>
+</ul>
+
+<p class="note">
+After decoupling, REF BUS behaves as a local stable source.
+</p>
+
+---
+
+<h2>4. Electrical Characteristics</h2>
+
+<ul>
+<li>Unbuffered CV output</li>
+<li>Designed for high-impedance Eurorack inputs</li>
+<li>Nonlinear response due to LDR characteristics</li>
+<li>Time response defined by R × C interaction</li>
+</ul>
+
+<p class="warn">
+Not intended for pitch CV or audio-rate modulation.
+</p>
+
+---
+
+<h2>5. Intended Use</h2>
+
+<ul>
+<li>VCF cutoff modulation</li>
+<li>VCA level shaping</li>
+<li>LFO rate warping</li>
+<li>Envelope shaping</li>
+<li>Slow chaotic modulation blending</li>
+</ul>
+
+---
+
+<h2>6. Mechanical Format</h2>
+
+<ul>
+<li>Designed for 6HP single-channel format</li>
+<li>Replicable per channel</li>
+<li>Birch plywood panel compatible (engraved)</li>
+<li>No internal multing</li>
+</ul>
+
+---
+
+<h2>7. Status</h2>
+
+<p><strong>CVCooperator V1 is locked.</strong><br>
+Architecture frozen. Further changes belong to V2.</p>
+
+<footer>
+CVCooperator — V1<br>
+De la Modular
+</footer>
+
+</body>
+</html>

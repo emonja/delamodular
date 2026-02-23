@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DE LA MODULAR — Panel Designer Pro</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Bevan&display=swap" rel="stylesheet">
+
+<style>
+:root {
+    --bg: #0c0c0c;
+    --panel: #141414;
+    --text: #f1f1f1;
+    --muted: #8a8a8a;
+    --line: rgba(255,255,255,0.08);
+    --accent: #f0566d;
+}
+
+body {
+    margin:0;
+    background:var(--bg);
+    color:var(--text);
+    font-family:"DIN1451","Bahnschrift","Arial Narrow",sans-serif;
+}
+
+.wrapper {
+    max-width:1200px;
+    margin:auto;
+    padding:60px 24px;
+}
+
+h1 {
+    font-family:"Bevan",serif;
+    letter-spacing:0.08em;
+}
+
+.controls, .row-controls {
+    background:var(--panel);
+    border:1px solid var(--line);
+    padding:15px;
+    margin-bottom:20px;
+}
+
+input, button {
+    background:transparent;
+    border:1px solid var(--text);
+    color:var(--text);
+    padding:8px;
+    margin:4px;
+}
+
+button:hover {
+    border-color:var(--accent);
+    color:var(--accent);
+    cursor:pointer;
+}
+
+.row-wrapper {
+    margin-bottom:40px;
+}
+
+.stats {
+    font-size:13px;
+    color:var(--muted);
+    margin-top:10px;
+}
+
+svg {
+    background:#000;
+    border:1px solid var(--line);
+}
+
+.module rect {
+    fill:none;
+    stroke:white;
+    stroke-width:0.6;
+}
+
+.module text {
+    fill:white;
+    font-size:4px;
+    pointer-events:none;
+}
+</style>
+</head>
+<body>
+
+<div class="wrapper">
+<h1>DE LA MODULAR — PANEL DESIGNER PRO</h1>
+
+<div class="controls">
+    New Row Width (HP):
+    <input type="number" id="newRowHP" value="84">
+    <button onclick="addRow()">Add Row</button>
+</div>
+
+<div id="rowsContainer"></div>
+
+</div>
+
+<script>
+const HP_TO_MM = 5.08;
+const ROW_HEIGHT = 128.5;
+
+let rows = [];
+
+function addRow() {
+    const hp = parseFloat(document.getElementById("newRowHP").value);
+    if (!hp) return;
+    rows.push({
+        hp: hp,
+        modules: []
+    });
+    render();
+}
+
+function deleteRow(index){
+    rows.splice(index,1);
+    render();
+}
+
+function addModule(rowIndex) {
+    const name = prompt("Module name?");
+    const hp = parseFloat(prompt("Module HP size?"));
+    if (!hp) return;
+
+    const row = rows[rowIndex];
+    const widthMM = hp * HP_TO_MM;
+    let used = row.modules.reduce((s,m)=>s+m.width,0);
+
+    if (used + widthMM > row.hp * HP_TO_MM){
+        alert("Not enough space.");
+        return;
+    }
+
+    row.modules.push({
+        name: name.toUpperCase(),
+        hp: hp,
+        width: widthMM,
+        x: used
+    });
+
+    render();
+}
+
+function deleteModule(rowIndex, modIndex){
+    rows[rowIndex].modules.splice(modIndex,1);
+    render();
+}
+
+function render() {
+
+    const container = document.getElementById("rowsContainer");
+    container.innerHTML = "";
+
+    rows.forEach((row,rowIndex)=>{
+
+        const rowDiv = document.createElement("div");
+        rowDiv.className = "row-wrapper";
+
+        const rowControls = document.createElement("div");
+        rowControls.className = "row-controls";
+        rowControls.innerHTML = `
+            Row ${rowIndex+1} — ${row.hp}HP
+            <button onclick="addModule(${rowIndex})">Add Module</button>
+            <button onclick="exportRow(${rowIndex})">Download SVG</button>
+            <button onclick="deleteRow(${rowIndex})">Delete Row</button>
+        `;
+        rowDiv.appendChild(rowControls);
+
+        const widthMM = row.hp * HP_TO_MM;
+
+        const svg = document.createElementNS("http://www.w3.org/2000/svg","svg");
+        svg.setAttribute("width", widthMM + "mm");
+        svg.setAttribute("height", ROW_HEIGHT + "mm");
+        svg.setAttribute("viewBox", `0 0 ${widthMM} ${ROW_HEIGHT}`);
+
+        const frame = document.createElementNS(svg.namespaceURI,"rect");
+        frame.setAttribute("width",widthMM);
+        frame.setAttribute("height",ROW_HEIGHT);
+        frame.setAttribute("fill","none");
+        frame.setAttribute("stroke","white");
+        svg.appendChild(frame);
+
+        row.modules.forEach((mod,modIndex)=>{
+
+            const g = document.createElementNS(svg.namespaceURI,"g");
+            g.setAttribute("class","module");
+            g.setAttribute("transform",`translate(${mod.x},0)`);
+
+            const rect = document.createElementNS(svg.namespaceURI,"rect");
+            rect.setAttribute("width",mod.width);
+            rect.setAttribute("height",ROW_HEIGHT);
+
+            const text = document.createElementNS(svg.namespaceURI,"text");
+            text.setAttribute("x",mod.width/2);
+            text.setAttribute("y",ROW_HEIGHT/2);
+            text.setAttribute("text-anchor","middle");
+            text.textContent = `${mod.name} (${mod.hp}HP)`;
+
+            g.appendChild(rect);
+            g.appendChild(text);
+
+            // DELETE on double click
+            g.addEventListener("dblclick",()=>{
+                deleteModule(rowIndex,modIndex);
+            });
+
+            // DRAG
+            let dragging=false;
+            let offsetX=0;
+
+            g.addEventListener("mousedown",(e)=>{
+                dragging=true;
+                offsetX=e.offsetX - mod.x;
+            });
+
+            svg.addEventListener("mousemove",(e)=>{
+                if(!dragging) return;
+
+                let x = e.offsetX - offsetX;
+                x = Math.round(x / HP_TO_MM) * HP_TO_MM;
+
+                if(x<0) x=0;
+                if(x + mod.width > widthMM)
+                    x = widthMM - mod.width;
+
+                for(let i=0;i<row.modules.length;i++){
+                    if(i===modIndex) continue;
+                    let m=row.modules[i];
+                    if(x < m.x + m.width && x + mod.width > m.x)
+                        return;
+                }
+
+                mod.x = x;
+                render();
+            });
+
+            svg.addEventListener("mouseup",()=>dragging=false);
+            svg.addEventListener("mouseleave",()=>dragging=false);
+
+            svg.appendChild(g);
+        });
+
+        rowDiv.appendChild(svg);
+
+        const usedHP = row.modules.reduce((s,m)=>s+m.hp,0);
+        const usedMM = row.modules.reduce((s,m)=>s+m.width,0);
+
+        const stats = document.createElement("div");
+        stats.className="stats";
+        stats.innerHTML = `USED: ${usedHP}HP (${usedMM.toFixed(2)}mm) — FREE: ${row.hp-usedHP}HP`;
+        rowDiv.appendChild(stats);
+
+        container.appendChild(rowDiv);
+    });
+}
+
+function exportRow(rowIndex){
+
+    const row = rows[rowIndex];
+    const widthMM = row.hp * HP_TO_MM;
+
+    let svgContent = `
+<svg xmlns="http://www.w3.org/2000/svg"
+width="${widthMM}mm"
+height="${ROW_HEIGHT}mm"
+viewBox="0 0 ${widthMM} ${ROW_HEIGHT}">
+<rect x="0" y="0" width="${widthMM}" height="${ROW_HEIGHT}" fill="none" stroke="black"/>
+`;
+
+    row.modules.forEach(mod=>{
+        svgContent+=`
+<rect x="${mod.x}" y="0" width="${mod.width}" height="${ROW_HEIGHT}"
+fill="none" stroke="black"/>
+`;
+    });
+
+    svgContent+=`</svg>`;
+
+    const blob=new Blob([svgContent],{type:"image/svg+xml"});
+    const url=URL.createObjectURL(blob);
+    const a=document.createElement("a");
+    a.href=url;
+    a.download=`DE_LA_MODULAR_ROW_${rowIndex+1}.svg`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+}
+
+render();
+</script>
+
+</body>
+</html>

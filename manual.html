@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DE LA MODULAR — Web Style Manual</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Bevan&display=swap" rel="stylesheet">
+
+<style>
+
+/* =========================
+   CORE VARIABLES
+   ========================= */
+
+:root {
+    --primary-font: "DIN1451", "Bahnschrift", "Arial Narrow", sans-serif;
+    --experimental-font: "Bevan", serif;
+
+    --bg: #0c0c0c;
+    --panel: #141414;
+    --text: #f1f1f1;
+    --muted: #8a8a8a;
+    --line: rgba(255,255,255,0.08);
+    --accent: #f0566d;
+
+    --max-width: 1200px;
+}
+
+/* =========================
+   BASE
+   ========================= */
+
+body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--primary-font);
+    line-height: 1.6;
+}
+
+.wrapper {
+    max-width: var(--max-width);
+    margin: auto;
+    padding: 100px 24px;
+}
+
+section {
+    margin-bottom: 120px;
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 60px;
+}
+
+h1 {
+    font-size: 54px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+}
+
+h2 {
+    font-size: 28px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-top: 60px;
+}
+
+p {
+    max-width: 700px;
+    color: var(--muted);
+}
+
+code {
+    display: block;
+    background: var(--panel);
+    padding: 20px;
+    border: 1px solid var(--line);
+    margin-top: 20px;
+    white-space: pre-wrap;
+    font-family: monospace;
+    font-size: 14px;
+    color: var(--text);
+}
+
+/* Accent Preview */
+.color-sample {
+    width: 100%;
+    height: 80px;
+    margin-top: 20px;
+}
+
+.bg-sample { background: #0c0c0c; }
+.accent-sample { background: #f0566d; }
+.panel-sample { background: #141414; }
+
+/* Texture demo */
+.texture-demo {
+    height: 150px;
+    position: relative;
+    margin-top: 20px;
+    background: #0c0c0c;
+    overflow: hidden;
+}
+
+.texture-demo::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image:
+        radial-gradient(rgba(255,255,255,0.03) 1px, transparent 1px);
+    background-size: 3px 3px;
+    opacity: 0.15;
+}
+
+.texture-demo::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        transparent 0%,
+        rgba(255,255,255,0.02) 50%,
+        transparent 100%
+    );
+    animation: scan 10s linear infinite;
+    opacity: 0.12;
+}
+
+@keyframes scan {
+    0% { transform: translateY(-100%); }
+    100% { transform: translateY(100%); }
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="wrapper">
+
+<h1>DE LA MODULAR — Web Style Manual</h1>
+
+<section>
+<h2>1. Brand Foundation</h2>
+<p>
+Tone: Differently serious.  
+Direct. Minimal. Underground.  
+No corporate gloss. No decorative noise.
+</p>
+</section>
+
+<section>
+<h2>2. Color System</h2>
+
+<p><strong>Primary Background</strong></p>
+<div class="color-sample bg-sample"></div>
+<code>#0c0c0c</code>
+
+<p><strong>Accent (Voltage Pink)</strong></p>
+<div class="color-sample accent-sample"></div>
+<code>#f0566d</code>
+
+<p><strong>Panel Surface</strong></p>
+<div class="color-sample panel-sample"></div>
+<code>#141414</code>
+
+<p>
+Pink is used sparingly:  
+– Accent lines  
+– Hover borders  
+– Micro highlights  
+Never as background.
+</p>
+</section>
+
+<section>
+<h2>3. Typography System</h2>
+
+<p><strong>Primary Font</strong></p>
+<code>
+"DIN1451", "Bahnschrift", "Arial Narrow", sans-serif
+</code>
+
+<p>
+Usage:  
+– Navigation  
+– Body  
+– Structural headers  
+– UI elements  
+Uppercase preferred for headers.
+</p>
+
+<p><strong>Experimental Font</strong></p>
+<code>
+"Bevan", serif
+</code>
+
+<p>
+Usage:  
+– Hero statements  
+– Taglines  
+– Controlled emphasis  
+Never for body text.
+</p>
+
+</section>
+
+<section>
+<h2>4. Layout System</h2>
+
+<p>
+Max width: 1200px  
+12-column grid system  
+Generous negative space  
+Sections separated by thin 1px divider line
+</p>
+
+<code>
+.grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 32px;
+}
+</code>
+
+</section>
+
+<section>
+<h2>5. Motion System</h2>
+
+<p>
+Motion is subtle and restrained.  
+No large parallax.  
+No exaggerated animation.
+</p>
+
+<p><strong>Scan Drift</strong></p>
+<div class="texture-demo"></div>
+
+<p>
+Slow vertical movement.  
+Very low opacity.  
+Simulates voltage presence.
+</p>
+
+<p><strong>Jitter</strong></p>
+<code>
+setInterval(() => {
+  const x = (Math.random() - 0.5) * 0.6;
+  const y = (Math.random() - 0.5) * 0.6;
+  element.style.transform = `translate(${x}px, ${y}px)`;
+}, 120);
+</code>
+
+<p>
+Max displacement: under 1px.  
+Creates tension, not chaos.
+</p>
+
+</section>
+
+<section>
+<h2>6. Interaction Rules</h2>
+
+<p>
+Buttons:  
+– Transparent background  
+– 1px white border  
+– Pink border on hover  
+– No heavy fills  
+</p>
+
+<p>
+Panels:  
+– Dark surface (#141414)  
+– 1px border  
+– Pink border on hover  
+</p>
+
+<p>
+Navigation:  
+– Uppercase  
+– Slight letter-spacing  
+– Pink hover state  
+</p>
+
+</section>
+
+<section>
+<h2>7. What Not To Do</h2>
+
+<p>
+No gradients.  
+No glass morphism.  
+No drop shadows.  
+No neon glow.  
+No large motion effects.  
+No tech startup aesthetics.
+</p>
+
+<p>
+Serious. Controlled. Deliberate.
+</p>
+
+</section>
+
+</div>
+
+</body>
+</html>
