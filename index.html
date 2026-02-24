@@ -1,187 +1,357 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PRECISION FOR THE CHAOS // SYSTEM_V1.0</title>
-    
-    <link href="https://fonts.googleapis.com/css2?family=Bevan&display=swap" rel="stylesheet">
-    
-    <style>
-        :root {
-            /* From Manual */
-            --primary-font: "DIN1451", "Bahnschrift", "Arial Narrow", sans-serif;
-            --experimental-font: "Bevan", serif;
-            --color-bg: #0a0a0a;
-            --color-text: #f2f2f2;
-            --color-accent: #ff4d6d; /* Your signature pink */
-            
-            /* Spacing System - Base 8px */
-            --unit: 8px;
-            --gap-section: calc(var(--unit) * 10); /* 80px */
-            --gap-sub: calc(var(--unit) * 5);     /* 40px */
-            --gap-micro: calc(var(--unit) * 2);   /* 16px */
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DE LA MODULAR</title>
 
-        body {
-            background-color: var(--color-bg);
-            color: var(--color-text);
-            font-family: var(--primary-font);
-            margin: 0;
-            padding: 0;
-            text-transform: uppercase; /* Brand Authority */
-        }
+<link href="https://fonts.googleapis.com/css2?family=Bevan&display=swap" rel="stylesheet">
 
-        /* 12-COLUMN GRID OVERLAY (Visualizing the Manual) */
-        .site-grid {
-            display: grid;
-            grid-template-columns: repeat(12, 1fr);
-            gap: 24px;
-            max-width: 1100px;
-            margin: 0 auto;
-            padding: 0 24px;
-        }
+<style>
 
-        /* HEADER & NAVIGATION */
-        nav {
-            grid-column: span 12;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: var(--gap-micro) 0;
-            border-bottom: 1px solid rgba(255,255,255,0.15);
-            margin-bottom: var(--gap-sub);
-        }
+/* =========================
+   COLOR DOCTRINE
+========================= */
 
-        .logo-box {
-            background: var(--color-accent);
-            color: var(--color-bg);
-            padding: 5px 10px;
-            font-weight: 700;
-            letter-spacing: 0.1em;
-        }
+:root {
+    --primary-font: "DIN1451", "Bahnschrift", "Arial Narrow", sans-serif;
+    --experimental-font: "Bevan", serif;
 
-        /* HERO - SECTION 1: SYSTEM AUTHORITY */
-        .hero {
-            grid-column: span 12;
-            padding: var(--gap-section) 0;
-            border-bottom: 1px solid rgba(255,255,255,0.15);
-        }
+    --bg: #0a0312;
+    --panel: #0a0312;
+    --text: #f0e6fb;
+    --muted: #f0e6fb;
+    --line: rgba(240,230,250,0.08);
+    --accent: #e84b76;
 
-        h1 {
-            font-size: clamp(40px, 8vw, 64px);
-            letter-spacing: 0.08em;
-            margin: 0;
-            line-height: 0.9;
-        }
+    --max-width: 1200px;
+}
 
-        .experimental-burst {
-            font-family: var(--experimental-font);
-            color: var(--color-accent);
-            font-size: clamp(30px, 5vw, 48px);
-            margin-top: var(--gap-micro);
-            letter-spacing: 0.02em;
-        }
+* { box-sizing: border-box; }
 
-        /* PRODUCT TIERS - GRID LOGIC */
-        .product-card {
-            grid-column: span 4; /* From your Manual's Col-4 */
-            background: rgba(255,255,255,0.03);
-            border: 1px solid rgba(255,255,255,0.1);
-            padding: var(--gap-micro);
-            transition: all 0.2s ease;
-        }
+body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--primary-font);
+    line-height: 1.6;
+}
 
-        .product-card:hover {
-            border-color: var(--color-accent);
-            background: rgba(255,77,109,0.05);
-        }
+/* Subtle texture */
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    background-image:
+        radial-gradient(rgba(255,255,255,0.02) 1px, transparent 1px);
+    background-size: 3px 3px;
+    opacity: 0.15;
+    z-index: 0;
+}
 
-        .product-img {
-            width: 100%;
-            aspect-ratio: 1/1;
-            background: #1a1a1a;
-            margin-bottom: var(--gap-micro);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 12px;
-            opacity: 0.5;
-        }
+body > * {
+    position: relative;
+    z-index: 2;
+}
 
-        /* TECHNICAL SPEC TABLE */
-        .specs {
-            grid-column: span 12;
-            margin-top: var(--gap-section);
-            padding-bottom: var(--gap-section);
-        }
+/* =========================
+   NAV
+========================= */
 
-        .spec-row {
-            display: flex;
-            justify-content: space-between;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-            padding: var(--gap-micro) 0;
-        }
+nav {
+    position: fixed;
+    width: 100%;
+    background: var(--bg);
+    border-bottom: 1px solid var(--line);
+    z-index: 10;
+}
 
-        .caption {
-            font-size: 14px;
-            letter-spacing: 0.1em;
-            opacity: 0.6;
-        }
+.nav-inner {
+    max-width: var(--max-width);
+    margin: auto;
+    padding: 20px 24px 12px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
 
-        @media (max-width: 768px) {
-            .product-card { grid-column: span 12; }
-        }
-    </style>
+.logo {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.logo img {
+    width: 83px;
+    height: 83px;
+    display: block;
+}
+
+/* micro pink line */
+.logo::after {
+    content: "";
+    height: 1px;
+    width: 0;
+    background: var(--accent);
+    margin-top: 6px;
+    transition: width 0.8s ease;
+}
+
+nav.loaded .logo::after {
+    width: 28px;
+}
+
+.nav-links {
+    padding-top: 28px;
+}
+
+.nav-links a {
+    margin-left: 32px;
+    text-decoration: none;
+    color: var(--text);
+    font-size: 13px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    opacity: 0.75;
+    transition: 0.3s ease;
+}
+
+.nav-links a:hover {
+    color: var(--accent);
+    opacity: 1;
+}
+
+/* =========================
+   HERO
+========================= */
+
+.hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    padding: 140px 24px 120px 24px;
+    position: relative;
+    overflow: hidden;
+}
+
+/* pig outline ghost */
+.hero::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: url("logo_pig.svg") center/60% no-repeat;
+    opacity: 0.045;
+    pointer-events: none;
+}
+
+.hero-inner {
+    max-width: 900px;
+    margin: auto;
+}
+
+.statement {
+    font-family: var(--experimental-font);
+    font-size: 56px;
+    line-height: 1.15;
+    margin-bottom: 30px;
+}
+
+.voltage-line {
+    height: 2px;
+    width: 0;
+    background: var(--accent);
+    margin-top: 25px;
+    transition: width 1.2s ease;
+}
+
+.hero.active .voltage-line {
+    width: 180px;
+}
+
+.hero p {
+    margin-top: 40px;
+    max-width: 600px;
+    opacity: 0.85;
+    font-size: 18px;
+}
+
+.button {
+    display: inline-block;
+    margin-top: 40px;
+    padding: 14px 30px;
+    border: 1px solid var(--text);
+    text-decoration: none;
+    color: var(--text);
+    text-transform: uppercase;
+    font-size: 13px;
+    letter-spacing: 0.12em;
+    transition: 0.3s ease;
+}
+
+.button:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+}
+
+/* =========================
+   SECTIONS
+========================= */
+
+section {
+    padding: 140px 24px;
+    border-top: 1px solid var(--line);
+}
+
+.wrapper {
+    max-width: var(--max-width);
+    margin: auto;
+}
+
+h2 {
+    font-size: 42px;
+    text-transform: uppercase;
+    margin-bottom: 60px;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 40px;
+}
+
+.col-6 { grid-column: span 6; }
+.col-4 { grid-column: span 4; }
+
+.panel {
+    padding: 48px;
+    border: 1px solid var(--line);
+    transition: border-color 0.4s ease;
+}
+
+.panel:hover {
+    border-color: var(--accent);
+}
+
+.panel p {
+    font-size: 18px;
+}
+
+/* =========================
+   FOOTER
+========================= */
+
+footer {
+    padding: 60px 24px;
+    border-top: 1px solid var(--line);
+    font-size: 13px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    opacity: 0.7;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 900px) {
+
+    .grid {
+        grid-template-columns: 1fr;
+    }
+
+    .col-6, .col-4 {
+        grid-column: span 1;
+    }
+
+    .statement {
+        font-size: 36px;
+    }
+}
+
+</style>
 </head>
+
 <body>
 
-<div class="site-grid">
-    <nav>
-        <div class="logo-box">DE LA .OM RAJUO</div>
-        <div class="caption">// MODULAR SHELTER PROTOCOL //</div>
-    </nav>
-
-    <section class="hero">
-        <div class="caption">Status: Online // CNC System 44.1kHz</div>
-        <h1>PRECISION FOR THE CHAOS</h1>
-        <div class="experimental-burst">EXPERIMENTAL ARTIST INTERFACE</div>
-    </section>
-
-    <div class="product-card">
-        <div class="product-img">[ CNC_PATH_WALNUT ]</div>
-        <h3>_CASE_01: WALNUT</h3>
-        <p class="caption">Precision Machined Core</p>
-    </div>
-
-    <div class="product-card">
-        <div class="product-img">[ CNC_PATH_BLACK ]</div>
-        <h3>_CASE_02: VALCHROMAT</h3>
-        <p class="caption">Industrial Mass System</p>
-    </div>
-
-    <div class="product-card">
-        <div class="product-img">[ CNC_PATH_CLEAR ]</div>
-        <h3>_CASE_03: ACRYLIC</h3>
-        <p class="caption">The Ghost Signal Layer</p>
-    </div>
-
-    <section class="specs">
-        <h2>3 — TECHNICAL_MANIFEST</h2>
-        <div class="spec-row">
-            <span>Standard Width</span>
-            <span class="color-accent">84HP / 104HP / 126HP</span>
+<nav>
+    <div class="nav-inner">
+        <div class="logo">
+            <img src="logo_text.svg" alt="DE LA MODULAR logo">
         </div>
-        <div class="spec-row">
-            <span>Material Tolerance</span>
-            <span>+/- 0.01MM CNC PRECISION</span>
+        <div class="nav-links">
+            <a href="#">Cases</a>
+            <a href="#">Custom</a>
+            <a href="#">About</a>
+            <a href="#">Contact</a>
         </div>
-        <div class="spec-row">
-            <span>Core Material</span>
-            <span>A-GRADE SOLID HARDWOOD</span>
+    </div>
+</nav>
+
+<div class="hero">
+    <div class="hero-inner">
+        <div class="statement" id="jitterText">
+            Built for Voltage.<br>
+            Survives the Stage.
         </div>
-    </section>
+        <div class="voltage-line"></div>
+        <p>
+            Modular cases designed for people who are done with generic boxes.
+            Clean lines. Solid structure.
+        </p>
+        <a href="#" class="button">See the Cases</a>
+    </div>
 </div>
+
+<section>
+    <div class="wrapper">
+        <h2>Why We Build</h2>
+        <div class="grid">
+            <div class="panel col-6">
+                <p>Modular sound pushes boundaries. Most cases do not.</p>
+            </div>
+            <div class="panel col-6">
+                <p>We build structures that match the seriousness of the systems inside them.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section>
+    <div class="wrapper">
+        <h2>What We Make</h2>
+        <div class="grid">
+            <div class="panel col-4">
+                <p>Dual-row 60HP performance cases.</p>
+            </div>
+            <div class="panel col-4">
+                <p>Fold-close modular systems.</p>
+            </div>
+            <div class="panel col-4">
+                <p>Custom builds when needed.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<footer>
+    © 2026 — DE LA MODULAR
+</footer>
+
+<script>
+window.addEventListener("load", () => {
+    document.querySelector(".hero").classList.add("active");
+    document.querySelector("nav").classList.add("loaded");
+});
+
+const text = document.getElementById("jitterText");
+
+setInterval(() => {
+    const x = (Math.random() - 0.5) * 0.6;
+    const y = (Math.random() - 0.5) * 0.6;
+    text.style.transform = `translate(${x}px, ${y}px)`;
+}, 120);
+</script>
 
 </body>
 </html>
